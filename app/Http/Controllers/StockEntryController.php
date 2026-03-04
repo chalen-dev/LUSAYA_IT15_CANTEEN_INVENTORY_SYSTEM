@@ -78,7 +78,14 @@ class StockEntryController extends Controller
     {
         $products = Product::all();
         $suppliers = Supplier::all();
-        return view('stock-entries.edit', compact('stockEntry', 'products', 'suppliers'));
+
+        $productOptions = $products->pluck('product_name', 'id')->toArray();
+        $supplierOptions = $suppliers->mapWithKeys(function ($supplier) {
+            $displayName = $supplier->supplier_name ?? $supplier->name ?? 'Supplier #' . $supplier->id;
+            return [$supplier->id => $displayName];
+        })->toArray();
+
+        return view('stock-entries.edit', compact('stockEntry', 'productOptions', 'supplierOptions'));
     }
 
     /**

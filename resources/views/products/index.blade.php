@@ -11,7 +11,7 @@
 
         <h1>Products List</h1>
         <a href="{{route('products.create')}}" class="createBtn">Create new Product</a>
-        <button type="button" onclick="confirmDelete(this, 'product')" class="deleteBtn" >
+        <button type="button" id="delete-selected" onclick="confirmDelete(this, 'product')" class="deleteBtn disabled" disabled>
             Delete Selected
         </button>
         @if($products->isNotEmpty())
@@ -41,7 +41,7 @@
                     <td>{{ $product->price }}</td>
                     <td>{{ $product->current_stock }}</td>
                     <td>
-                        <a href="{{ route('products.edit', $product) }}">Edit</a>
+                        <a href="{{ route('products.edit', $product) }}" class="editBtn">Edit</a>
                     </td>
                 </tr>
             @endforeach
@@ -57,14 +57,7 @@
 @endsection
 
 @push('scripts')
-    <script>
-        document.getElementById('select-all').onclick = function(){
-            var checkboxes = document.getElementsByName('ids[]');
-            for (var checkbox of checkboxes){
-                checkbox.checked = this.checked;
-            }
-        }
-    </script>
+    <x-script.index-scripts/>
 @endpush
 
 

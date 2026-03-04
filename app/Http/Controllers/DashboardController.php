@@ -2,7 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Product;
+use App\Models\StockEntry;
+use App\Models\Supplier;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class DashboardController extends Controller
 {
@@ -11,7 +15,30 @@ class DashboardController extends Controller
      */
     public function index()
     {
-        //
+        $totalProducts = Product::count();
+        $totalSuppliers = Supplier::count();
+        $totalStockEntries = StockEntry::count();
+
+        $totalStockValue = Product::sum(DB::raw('price * current_stock'));
+
+        $lowStockProducts = Product::where('current_stock', '<', 10)->get(); // threshold 10, configurable
+
+        $recentStockEntries = StockEntry::with('product', 'supplier')
+            ->latest()
+            ->take(5)
+            ->get();
+
+        $totalQuantityReceived = StockEntry::sum('quantity');
+
+        return view('dashboard.index', compact(
+            'totalProducts',
+            'totalSuppliers',
+            'totalStockEntries',
+            'totalStockValue',
+            'lowStockProducts',
+            'recentStockEntries',
+            'totalQuantityReceived'
+        ));
     }
 
     /**

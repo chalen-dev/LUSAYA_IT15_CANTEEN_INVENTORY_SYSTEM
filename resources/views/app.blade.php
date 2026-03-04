@@ -27,12 +27,16 @@
 </head>
 <body class="bg-page h-full antialiased">
 <div>
-    <x-partials.header/>
-    <x-partials.left-sidebar/>
-    <main class="flex-1 p-5">
-        @yield('section-header')
-        @yield('content')
-    </main>
+    <div class="min-h-screen flex flex-col">
+        <x-partials.header/>
+        <div class="flex flex-1">
+            <x-partials.left-sidebar/>
+            <main class="flex-1 p-5">
+                @yield('section-header')
+                @yield('content')
+            </main>
+        </div>
+    </div>
     <!--Footer-->
 </div>
 @include('components.utils.flash-toasts')
