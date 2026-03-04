@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Product;
 use App\Models\StockEntry;
+use App\Models\Supplier;
 use Illuminate\Http\Request;
 
 class StockEntryController extends Controller
@@ -12,7 +14,8 @@ class StockEntryController extends Controller
      */
     public function index()
     {
-        //
+        $stockEntries = StockEntry::all();
+        return view('stock_entries.index', compact('stockEntries'));
     }
 
     /**
@@ -20,7 +23,9 @@ class StockEntryController extends Controller
      */
     public function create()
     {
-        //
+        $products = Product::all();
+        $suppliers = Supplier::all();
+        return view('stock_entries.create', compact('products', 'suppliers'));
     }
 
     /**

@@ -20,7 +20,8 @@ class SupplierController extends Controller
      */
     public function create()
     {
-        //
+        $suppliers = Supplier::all();
+        return view('suppliers.create', compact('suppliers'));
     }
 
     /**
