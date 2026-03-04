@@ -41,7 +41,7 @@
                     <td>{{ $product->price }}</td>
                     <td>{{ $product->current_stock }}</td>
                     <td>
-                        <a href="{{ route('products.edit', $product) }}" class="editBtn">Edit</a>
+                        <a href="{{ route('products.edit', $product) }}" class="editBtn">View/Edit</a>
                     </td>
                 </tr>
             @endforeach
@@ -49,7 +49,9 @@
             </tbody>
         </table>
         @else
-            <h1>No products present. (Please run migrate seed)</h1>
+            <div class="empty-state">
+                No products found. (Please run migrate and seed if needed.)
+            </div>
         @endif
 
     </form>

@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('stock_entries', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('product_id')->constrained('products');
+            $table->foreignId('product_id')->constrained()->onDelete('cascade');
             $table->foreignId('supplier_id')->constrained('suppliers');
             $table->integer('quantity'); //int
             $table->string('delivery_reference')->unique();

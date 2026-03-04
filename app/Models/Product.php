@@ -20,4 +20,9 @@ class Product extends Model
             ->withPivot('quantity', 'delivery_reference')
             ->withTimestamps();
     }
+
+    public function stockEntries()
+    {
+        return $this->hasMany(StockEntry::class);
+    }
 }

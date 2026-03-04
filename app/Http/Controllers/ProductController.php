@@ -30,10 +30,10 @@ class ProductController extends Controller
     public function store(Request $request)
     {
         $validated = $request->validate([
-            'product_code' => 'required|max:255',
+            'product_code'  => 'required|max:255|unique:products,product_code',
             'product_name' => 'required|max:255',
             'price' => 'required',
-            'current_stock' => 'required',
+            'current_stock' => 'nullable',
         ]);
 
         Product::create($validated);
@@ -66,10 +66,10 @@ class ProductController extends Controller
     public function update(Request $request, Product $product)
     {
         $validated = $request->validate([
-            'product_code' => 'required|max:255',
+            'product_code'  => 'required|max:255|unique:products,product_code,' . $product->id,
             'product_name' => 'required|max:255',
             'price'        => 'required',
-            'current_stock' => 'required',
+            'current_stock' => 'nullable'
         ]);
 
         $product->update($validated);
@@ -90,17 +90,26 @@ class ProductController extends Controller
     public function destroyMultiple(Request $request)
     {
         $validated = $request->validate([
-            'ids' => 'required|array',
-            'ids*' => 'integer|exists:products,id'
+            'ids'   => 'required|array',
+            'ids.*' => 'integer|exists:products,id'
         ]);
 
-        $ids = $validated['ids'];
+        // Check if any of the selected products have stock entries
+        $productsWithEntries = Product::whereIn('id', $validated['ids'])
+            ->has('stockEntries')
+            ->count();
 
-        foreach($ids as $id)
-        {
-            $product = Product::findOrFail($id);
-            $product->delete();
+        if ($productsWithEntries > 0) {
+            return redirect()
+                ->back()
+                ->with('error', 'Cannot delete product(s) because they have associated stock entries.');
         }
-        return redirect()->back()->with('success', 'Selected Products deleted successfully.');
+
+        // Safe to delete
+        Product::whereIn('id', $validated['ids'])->delete();
+
+        return redirect()
+            ->back()
+            ->with('success', 'Selected products deleted successfully.');
     }
 }

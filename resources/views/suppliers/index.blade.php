@@ -3,16 +3,22 @@
 @section('title', 'Suppliers')
 
 @section('content')
-
     <form method="POST" action="{{ route('suppliers.destroyMultiple') }}">
         @csrf
         @method('DELETE')
 
         <h1>Suppliers List</h1>
-        <a href="{{ route('suppliers.create') }}" class="createBtn">Create New Supplier</a>
-        <button type="button" onclick="confirmDelete(this, 'supplier')" class="deleteBtn">
-            Delete Selected
-        </button>
+
+        <div class="mb-4 flex gap-3">
+            <a href="{{ route('suppliers.create') }}" class="createBtn">Create New Supplier</a>
+            <button type="button"
+                    id="delete-selected"
+                    onclick="confirmDelete(this, 'supplier')"
+                    class="deleteBtn disabled"
+                    disabled>
+                Delete Selected
+            </button>
+        </div>
 
         @if($suppliers->isNotEmpty())
             <table>
@@ -33,7 +39,7 @@
                 @foreach($suppliers as $supplier)
                     <tr>
                         <td>
-                            <input type="checkbox" name="ids[]" value="{{ $supplier->id }}">
+                            <input type="checkbox" name="ids[]" value="{{ $supplier->id }}" class="row-checkbox">
                         </td>
                         <td>{{ $supplier->id }}</td>
                         <td>{{ $supplier->supplier_code }}</td>
@@ -41,26 +47,20 @@
                         <td>{{ $supplier->contact_email }}</td>
                         <td>{{ $supplier->contact_number }}</td>
                         <td>
-                            <a href="{{ route('suppliers.edit', $supplier) }}">Edit</a>
+                            <a href="{{ route('suppliers.edit', $supplier) }}" class="editBtn">View/Edit</a>
                         </td>
                     </tr>
                 @endforeach
                 </tbody>
             </table>
         @else
-            <h1>No suppliers found. (Please run migrate and seed if needed.)</h1>
+            <div class="empty-state">
+                No suppliers found. (Please run migrate and seed if needed.)
+            </div>
         @endif
     </form>
-
 @endsection
 
 @push('scripts')
-    <script>
-        document.getElementById('select-all').onclick = function() {
-            var checkboxes = document.getElementsByName('ids[]');
-            for (var checkbox of checkboxes) {
-                checkbox.checked = this.checked;
-            }
-        }
-    </script>
+    <x-script.index-scripts/>
 @endpush

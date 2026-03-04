@@ -96,6 +96,17 @@ class SupplierController extends Controller
             'ids.*' => 'integer|exists:suppliers,id',
         ]);
 
+        // Check if any of the selected suppliers have stock entries
+        $suppliersWithEntries = Supplier::whereIn('id', $validated['ids'])
+            ->has('stockEntries')
+            ->count();
+
+        if ($suppliersWithEntries > 0) {
+            return redirect()
+                ->back()
+                ->with('error', 'Cannot delete supplier(s) because they have associated stock entries.');
+        }
+
         Supplier::whereIn('id', $validated['ids'])->delete();
 
         return redirect()
