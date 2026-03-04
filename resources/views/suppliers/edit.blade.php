@@ -1,23 +1,24 @@
 @extends('app')
 
-@section('title', 'Create Supplier')
+@section('title', 'Edit Supplier')
 
 @section('content')
-    <form method="POST" action="{{ route('suppliers.store') }}">
+    <form method="POST" action="{{ route('suppliers.update', $supplier) }}">
         @csrf
+        @method('PUT')
 
         <x-input.text
             label="Supplier Code"
             id="supplier_code"
             name="supplier_code"
-            value="{{ old('supplier_code') }}"
+            value="{{ old('supplier_code', $supplier->supplier_code) }}"
         />
 
         <x-input.text
             label="Supplier Name"
             id="supplier_name"
             name="supplier_name"
-            value="{{ old('supplier_name') }}"
+            value="{{ old('supplier_name', $supplier->supplier_name) }}"
         />
 
         <x-input.text
@@ -25,17 +26,17 @@
             id="contact_email"
             name="contact_email"
             type="email"
-            value="{{ old('contact_email') }}"
+            value="{{ old('contact_email', $supplier->contact_email) }}"
         />
 
         <x-input.text
             label="Contact Number"
             id="contact_number"
             name="contact_number"
-            value="{{ old('contact_number') }}"
+            value="{{ old('contact_number', $supplier->contact_number) }}"
         />
 
-        <button type="submit" class="createBtn">Create Supplier</button>
+        <button type="submit" class="updateBtn">Update Supplier</button>
         <a href="{{ route('suppliers.index') }}" class="cancelBtn">Cancel</a>
     </form>
 @endsection

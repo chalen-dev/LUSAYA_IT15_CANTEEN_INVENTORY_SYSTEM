@@ -1,23 +1,22 @@
 @extends('app')
 
-@section('title', 'Create Product')
+@section('title', 'Edit Product')
 
 @section('content')
-    <form method="POST" action="{{ route('products.store') }}">
+    <form method="POST" action="{{ route('products.update', $product) }}">
         @csrf
+        @method('PUT')
 
         <x-input.text
             label="Product Code"
-            id="product_code"
             name="product_code"
-            value="{{ old('product_code') }}"
+            value="{{ old('product_code', $product->product_code) }}"
         />
 
         <x-input.text
             label="Product Name"
-            id="product_name"
             name="product_name"
-            value="{{ old('product_name') }}"
+            value="{{ old('product_name', $product->product_name) }}"
         />
 
         <x-input.number
@@ -25,7 +24,7 @@
             name="price"
             step="0.01"
             min="0"
-            value="{{ old('price') }}"
+            value="{{ old('price', $product->price) }}"
         />
 
         <x-input.number
@@ -33,11 +32,10 @@
             name="current_stock"
             step="1"
             min="0"
-            value="{{ old('current_stock') }}"
+            value="{{ old('current_stock', $product->current_stock) }}"
         />
 
-        <button type="submit" class="createBtn">Create Product</button>
+        <button type="submit" class="createBtn">Update Product</button>
         <a href="{{ route('products.index') }}" class="cancelBtn">Cancel</a>
     </form>
 @endsection
-

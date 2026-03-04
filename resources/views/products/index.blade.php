@@ -41,7 +41,6 @@
                     <td>{{ $product->price }}</td>
                     <td>{{ $product->current_stock }}</td>
                     <td>
-                        <a href="{{ route('products.show', $product) }}">View Details</a>
                         <a href="{{ route('products.edit', $product) }}">Edit</a>
                     </td>
                 </tr>

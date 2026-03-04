@@ -29,7 +29,19 @@ class ProductController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $validated = $request->validate([
+            'product_code' => 'required|max:255',
+            'product_name' => 'required|max:255',
+            'price' => 'required',
+            'current_stock' => 'required',
+        ]);
+
+        Product::create($validated);
+
+        return redirect()
+            ->route('products.index')
+            ->withInput()
+            ->with('success', 'Product created successfully');
     }
 
     /**
@@ -37,7 +49,7 @@ class ProductController extends Controller
      */
     public function show(Product $product)
     {
-        //
+
     }
 
     /**
@@ -45,7 +57,7 @@ class ProductController extends Controller
      */
     public function edit(Product $product)
     {
-        //
+        return view('products.edit', compact('product'));
     }
 
     /**
@@ -53,7 +65,18 @@ class ProductController extends Controller
      */
     public function update(Request $request, Product $product)
     {
-        //
+        $validated = $request->validate([
+            'product_code' => 'required|max:255',
+            'product_name' => 'required|max:255',
+            'price'        => 'required',
+            'current_stock' => 'required',
+        ]);
+
+        $product->update($validated);
+
+        return redirect()
+            ->route('products.index')
+            ->with('success', 'Product updated successfully');
     }
 
     /**
