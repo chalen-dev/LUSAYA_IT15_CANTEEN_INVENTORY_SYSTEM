@@ -61,6 +61,23 @@ class ProductController extends Controller
      */
     public function destroy(Product $product)
     {
-        //
+
+    }
+
+    public function destroyMultiple(Request $request)
+    {
+        $validated = $request->validate([
+            'ids' => 'required|array',
+            'ids*' => 'integer|exists:products,id'
+        ]);
+
+        $ids = $validated['ids'];
+
+        foreach($ids as $id)
+        {
+            $product = Product::findOrFail($id);
+            $product->delete();
+        }
+        return redirect()->back()->with('success', 'Selected Products deleted successfully.');
     }
 }

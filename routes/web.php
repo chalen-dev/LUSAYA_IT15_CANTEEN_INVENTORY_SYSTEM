@@ -11,7 +11,11 @@ Route::get('/', function () {
     return view('dashboard.index');
 });
 
+Route::delete('products/destroy-multiple', [ProductController::class, 'destroyMultiple'])
+    ->name('products.destroyMultiple');
 Route::resource('products', ProductController::class);
+
+
 Route::resource('suppliers', SupplierController::class);
 Route::resource('stock-entries', StockEntryController::class);
 Route::resource('dashboard', DashboardController::class);
